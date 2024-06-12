@@ -35,6 +35,16 @@ router.use(
  * @TODO: Listing 22.1 (p. 325)
  * app.js에서의 플래시 메시지 요청
  */
+const expressSession = require("express.session")
+  cookieParser = require("cookie-parser"),
+  coonectFlsh = require("connect-flash");
+
+router.use(cookieParser("secret_passcode"));
+router.use(
+  expressSession({
+    secret: "secret_pass"
+  })
+)
 
 /**
  * @TODO: Listing 22.2 (p. 327)
@@ -47,21 +57,11 @@ router.use(
  * =====================================================================
  */
 
-// 애플리케이션에 Mongoose 설정
-const mongoose = require("mongoose"), // mongoose를 요청
-  dbName = "aaronkr";
-
+const mongoose = require("mongoose"); // mongoose를 요청
 // 데이터베이스 연결 설정
-mongoose.connect(`mongodb://127.0.0.1:27017/${dbName}`, {
+mongoose.connect("mongodb://127.0.0.1:27017/ut-nodejs", {
   useNewUrlParser: true,
 });
-
-// 연결되면 메시지를 보냄
-const db = mongoose.connection;
-db.once("open", () => {
-  console.log(`Connected to ${dbName} MongoDB using Mongoose!`);
-});
-
 /**
  * =====================================================================
  * Define app settings and middleware
